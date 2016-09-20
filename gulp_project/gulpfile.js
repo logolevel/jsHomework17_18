@@ -6,31 +6,23 @@ var gulp	 		= require('gulp'),
 		rename 		= require("gulp-rename"),
 		uglify 		= require('gulp-uglify');
 
-/*concatenate js*/
+/*concatenate, minify and rename js*/
 gulp.task('scripts', function() {
   return gulp.src('src/js/*.js')
     .pipe(concat('script.main.js'))
-    .pipe(gulp.dest('dist/js/'));
-});
-/*concatenate css*/
-gulp.task('libs', function () {
-  return gulp.src('src/css/*.css')
-    .pipe(concatCss("style.main.css"))
-    .pipe(gulp.dest('dist/css/'));
-});
-/*minify and rename main.css*/
-gulp.task('cssmin', function() {
-    return gulp.src('dist/css/style.main.css')
-        .pipe(cssnano())
-        .pipe(rename({suffix: '.min'}))
-        .pipe(gulp.dest('dist/css/'));
-});
-/*minify and rename main.js*/
-gulp.task('compress', function () {
-  return gulp.src('dist/js/script.main.js')
+    .pipe(gulp.dest('dist/js/'))
     .pipe(uglify())
     .pipe(rename({suffix: '.min'}))
     .pipe(gulp.dest('dist/js/'));
 });
+/*concatenate, minify and rename css*/
+gulp.task('styles', function () {
+  return gulp.src('src/css/*.css')
+    .pipe(concatCss("style.main.css"))
+    .pipe(gulp.dest('dist/css/'))
+    .pipe(cssnano())
+    .pipe(rename({suffix: '.min'}))
+    .pipe(gulp.dest('dist/css/'));
+});
 /*default task gulp*/
-gulp.task('default',['scripts','libs','cssmin','compress']);
+gulp.task('default',['scripts','styles']);
